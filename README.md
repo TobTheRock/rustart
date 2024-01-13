@@ -8,3 +8,11 @@ Rust web chart library
 cargo install wasm-pack
 rustup target install wasm32-unknown-unknown
 ```
+
+## Build
+
+Run
+
+```
+wasm-pack build --target web
+```
