@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "esbuild ./js/index.js --bundle --loader:.wasm=binary --outfile=html/dist/bundle.js",
-    "start": "esbuild ./js/index.js --bundle --loader:.wasm=binary --servedir=dist --outfile=html/dist/bundle.js --serve=:8000 --servedir=./html"
+    "build": "wasm-pack build --target web && esbuild ./js/index.js --bundle --loader:.wasm=binary --outfile=html/dist/bundle.js",
+    "start": "wasm-pack build --target web &&  esbuild ./js/index.js --bundle --loader:.wasm=binary --servedir=dist --outfile=html/dist/bundle.js --serve=:8000 --servedir=./html"
   },
   "keywords": [],
   "author": "",

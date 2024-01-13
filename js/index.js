@@ -1,4 +1,4 @@
-import { initSync, ask_deep_thought, initialize } from '../pkg/rustart.js';
+import { initSync, PlotCanvas, initialize } from '../pkg/rustart.js';
 import wasmData from '../pkg/rustart_bg.wasm'
 
 console.log("Loading WASM")
@@ -7,9 +7,16 @@ console.log("WASM loaded, initializing")
 initialize();
 console.log("initialized")
 
-document.querySelector('#askButton').addEventListener('click', async () => {
-let input = document.querySelector('#question').value;
-let result = await ask_deep_thought(input);
-//   let result = await answer(input);
-console.log(result);
-});
+// document.querySelector('#askButton').addEventListener('click', async () => {
+//   let input = document.querySelector('#question').value;
+//   let result = await ask_deep_thought(input);
+//   console.log(result);
+// });
+
+const canvas = document.querySelector('#plot');
+console.log("Found canvas: ", canvas);
+
+let plot_canvas = new PlotCanvas(canvas);
+console.log("Plot: ", plot_canvas);
+
+plot_canvas.draw_line();
