@@ -1,7 +1,14 @@
+use std::cmp::max;
+
 use wasm_bindgen::prelude::*;
 
 use plotters::{
-    chart::ChartBuilder, drawing::IntoDrawingArea, series::LineSeries, style::BLACK, style::WHITE,
+    chart::{ChartBuilder, LabelAreaPosition},
+    drawing::IntoDrawingArea,
+    element::PathElement, // Fix: Import the correct module `element::line` instead of `element::Line`
+    series::LineSeries,
+    style::BLACK,
+    style::WHITE,
 };
 use plotters_canvas::CanvasBackend;
 use wasm_bindgen::{prelude::wasm_bindgen, JsValue};
@@ -48,7 +55,7 @@ impl PlotCanvas {
     }
 
     #[wasm_bindgen]
-    pub fn draw_line(&self) -> Result<(), JsValue> {
+    pub fn draw_line(&self, x1: i32, y1: i32, x2: i32, y2: i32) -> Result<(), JsValue> {
         log::info!("Drawing line");
         let backend = CanvasBackend::with_canvas_object(self.canvas.clone()).unwrap();
         log::info!("Backend created");
@@ -59,31 +66,20 @@ impl PlotCanvas {
         log::info!("Drawing area filled");
 
         let mut chart = ChartBuilder::on(&root)
-            .build_cartesian_2d(-10..10, -10..10)
+            .set_label_area_size(LabelAreaPosition::Left, 40)
+            .set_label_area_size(LabelAreaPosition::Bottom, 40)
+            .build_cartesian_2d(0..max(x1, x2) + 5, 0..max(y1, y2) + 5)
             .unwrap();
 
-        chart
-            .configure_mesh()
-            // .disable_x_mesh()
-            // .disable_y_mesh()
-            .draw()
-            .unwrap();
+        chart.configure_mesh().draw().unwrap();
 
         let plotting_area = chart.plotting_area();
-
-        chart
-            .draw_series(LineSeries::new((-10..=10).map(|x| (x, x)), &BLACK))
+        plotting_area
+            .draw(&PathElement::new([(x1, y1), (x2, y2), (80, 20)], &BLACK))
             .unwrap();
 
         root.present().unwrap();
 
         Ok(())
     }
-}
-
-#[wasm_bindgen]
-pub fn plot(canvas: HtmlCanvasElement) -> Result<(), JsValue> {
-    log::info!("Generating Canvas");
-
-    todo!();
 }

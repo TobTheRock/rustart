@@ -19,4 +19,4 @@ console.log("Found canvas: ", canvas);
 let plot_canvas = new PlotCanvas(canvas);
 console.log("Plot: ", plot_canvas);
 
-plot_canvas.draw_line();
+plot_canvas.draw_line(40, 23, 100, 150);
